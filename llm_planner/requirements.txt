@@ -1,1 +1,21 @@
-llama-index 
+#Requirements
+groq==0.5.0
+python-dotenv==1.0.1
+requests==2.32.3
+
+#Installations
+pip install -r requirements.txt
+
+#Summary
+EV-Planner/
+├── requirements.txt     # ← NEW: Dependencies
+├── planner.py          # 24hr EV plan generator
+├── fpga_safety.py      # Grid/bus safety validator  
+├── run.bat            # Live 5min loop
+├── plan.json          # Auto-generated schedule
+├── .env               # Optional API key
+└── README.md          # ← UPDATED: Full docs
+
+#Command setup
+pip install -r requirements.txt && python planner.py && run.bat
+
