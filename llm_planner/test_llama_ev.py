@@ -2,7 +2,6 @@ import os
 from groq import Groq
 
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
-# this is GROQ_API_KEY - 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
 
 resp = client.chat.completions.create(
     model="llama3-8b-8192",
@@ -15,5 +14,6 @@ resp = client.chat.completions.create(
 )
 
 print(resp.choices[0].message.content)
+
 
 
