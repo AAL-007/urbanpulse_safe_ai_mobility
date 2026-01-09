@@ -9,8 +9,8 @@ This module acts as the *Neuro (Decision-Making)* component of our Neuro-Symboli
 
 3. *Safety Stress Testing* Intentionally generating hallucinated (unsafe) requests to demonstrate that *final authority resides in hardware*, not software.
 
-> ⚠️ *Important:* This module does *not* enforce safety limits in software.  
-> All safety decisions are delegated to the FPGA (or its simulation), preserving deterministic behavior.
+⚠️ *Important:* This module does *not* enforce safety limits in software.  
+All safety decisions are delegated to the FPGA (or its simulation), preserving deterministic behavior.
 
 ---
 
@@ -52,6 +52,7 @@ Output Example:
 
 ### Design Philosophy: "Why allow Hallucinations?"
 This module is permissioned to be creative. Unlike the FPGA layer, we do not implement hard safety checks in this Python code. We rely on the hardware to sanitize the output. This decoupling allows the AI to optimize aggressive charging strategies without risking physical safety
+
 
 
 
