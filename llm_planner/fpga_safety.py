@@ -8,11 +8,20 @@ STATUS_OK = 0x0      # 00
 STATUS_VETO = 0x1    # 01 (Grid Clamp)
 STATUS_THERMAL = 0x2 # 10 (Temp Trip)
 
+# DECODING MAP (For Cleaner Logs)
+STATUS_MAP = {
+    STATUS_OK: " PASS",
+    STATUS_VETO: " VETO (GRID CLAMP)",
+    STATUS_THERMAL: " VETO (THERMAL TRIP)"
+}
+
 def mock_fpga_hardware_gate(requested_kw):
     """
     Simulates GreenFlow FPGA Verilog Logic.
     Input: Unsafe AI Request
     Output: Physically Enforced Limit + Hex Status Code
+    
+    # NOTE: This function mirrors greenflow_gate.v logic line-for-line.
     """
     # Deterministic Hardware Logic
     if requested_kw > GRID_LIMIT_HARD:
@@ -21,7 +30,7 @@ def mock_fpga_hardware_gate(requested_kw):
 
 def run_safety_bridge():
     print("\n GREENFLOW FPGA SAFETY BRIDGE INITIALIZED")
-    print("="*50)
+    print("="*60)
     
     try:
         with open('plan.json', 'r') as f:
@@ -31,6 +40,8 @@ def run_safety_bridge():
         return
 
     print(f" Received AI Plan: {data['summary']}\n")
+    print(f"{'HOUR':<6} | {'REQUEST':<10} | {'STATUS':<25} | {'OUTPUT':<10}")
+    print("-" * 60)
 
     for step in data['plan']:
         hour = step['hour']
@@ -40,12 +51,13 @@ def run_safety_bridge():
         hw_enforced, status_code = mock_fpga_hardware_gate(ai_req)
         
         # 2. DECODE HARDWARE STATUS
-        if status_code == STATUS_VETO:
-            print(f" Hour {hour}: [REQ: {ai_req}kW] ->  [FPGA STATUS: 0x1 VETO] -> CLAMPED to {hw_enforced}kW")
-        elif status_code == STATUS_OK:
-            print(f" Hour {hour}: [REQ: {ai_req}kW] ->  [FPGA STATUS: 0x0 PASS] -> Approved")
+        status_msg = STATUS_MAP.get(status_code, "❓ UNKNOWN")
         
-    print("\n FINAL FPGA COMMANDS LATCHED.")
+        # 3. PRINT STRUCTURED LOG
+        print(f"{hour:<6} | {ai_req:<7} kW | {status_msg:<25} | {hw_enforced:<7} kW")
+        
+    print("-" * 60)
+    print(" FINAL FPGA COMMANDS LATCHED FOR INVERTER.")
 
 if _name_ == "_main_":
     run_safety_bridge()
