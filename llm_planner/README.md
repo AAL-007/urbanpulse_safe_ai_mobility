@@ -1,4 +1,4 @@
-> # 🧠 UrbanPulse: Intelligent Planner & Hardware Bridge
+> # 🧠 UrbanPulse: Intelligent Planner & Hardware Bridge <
 
 ## 📝 Module Overview
 This module acts as the *Neuro (Decision-Making)* component of our Neuro-Symbolic architecture. It is responsible for:
@@ -52,6 +52,7 @@ Output Example:
 
 ### Design Philosophy: "Why allow Hallucinations?"
 This module is permissioned to be creative. Unlike the FPGA layer, we do not implement hard safety checks in this Python code. We rely on the hardware to sanitize the output. This decoupling allows the AI to optimize aggressive charging strategies without risking physical safety
+
 
 
 
