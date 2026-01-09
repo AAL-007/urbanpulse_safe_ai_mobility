@@ -1,7 +1,7 @@
 #Requirements
-groq==0.5.0
-python-dotenv==1.0.1
-requests==2.32.3
+groq
+python-dotenv
+requests
 
 #Installations
 pip install -r requirements.txt
