@@ -28,7 +28,7 @@ This module acts as the *Neuro (Decision-Making)* component of our Neuro-Symboli
 
 ## ⚙️ Setup & Configuration
 
-# 1. Environment Variables
+### 1. Environment Variables
 Never hardcode API keys. Set your Groq API key via environment variables.
 
 Windows (PowerShell):
@@ -37,21 +37,22 @@ $env:GROQ_API_KEY="your_gsk_key_here"
 Linux / macOS:
 export GROQ_API_KEY="your_gsk_key_here"
 
-# 2. Install Dependencies
+### 2. Install Dependencies
 pip install -r requirements.txt
 
-# Step 1: Generate the AI Plan ("The Brain")
+### Step 1: Generate the AI Plan ("The Brain")
 Run the planner to analyze fleet status and generate a charging schedule.
 Output: Generates plan.json.
 Note: Hour 1 intentionally requests 350 kW (unsafe hallucination).
 
-# Step 2: Execute the Hardware Bridge (“The Muscle”)
+### Step 2: Execute the Hardware Bridge (“The Muscle”)
 Send the AI plan to the FPGA safety layer for enforcement.
 Output Example:
 ⏰ Hour 1: [REQ: 350kW] -> 🔴 [FPGA STATUS: 0x1 VETO] -> CLAMPED to 200kW
 
-# Design Philosophy: "Why allow Hallucinations?"
+### Design Philosophy: "Why allow Hallucinations?"
 This module is permissioned to be creative. Unlike the FPGA layer, we do not implement hard safety checks in this Python code. We rely on the hardware to sanitize the output. This decoupling allows the AI to optimize aggressive charging strategies without risking physical safety
+
 
 
 
