@@ -1,49 +1,51 @@
 import json
-import time
 
-# CONFIGURATION
-OUTPUT_FILE = "plan.json"
+# HARDWARE CONSTANTS (Mirroring Verilog Parameters)
+GRID_LIMIT_HARD = 200
 
-def generate_optimization_plan():
-    print(" URBANPULSE AI PLANNER STARTED...")
-    print(" Analyzing Fleet Status, Tariffs, and Grid Load...")
+# STATUS CODES (Mirroring Verilog Output)
+STATUS_OK = 0x0      # 00
+STATUS_VETO = 0x1    # 01 (Grid Clamp)
+STATUS_THERMAL = 0x2 # 10 (Temp Trip)
+
+def mock_fpga_hardware_gate(requested_kw):
+    """
+    Simulates GreenFlow FPGA Verilog Logic.
+    Input: Unsafe AI Request
+    Output: Physically Enforced Limit + Hex Status Code
+    """
+    # Deterministic Hardware Logic
+    if requested_kw > GRID_LIMIT_HARD:
+        return GRID_LIMIT_HARD, STATUS_VETO
+    return requested_kw, STATUS_OK
+
+def run_safety_bridge():
+    print("\n GREENFLOW FPGA SAFETY BRIDGE INITIALIZED")
+    print("="*50)
     
-    # Context Simulation
-    print(" Querying Llama-3 Reasoning Engine...")
-    time.sleep(1.5) # Simulate inference latency
-    
-    # HARDCODED "HALLUCINATION" FOR DEMO
-    # We intentionally request 350kW (unsafe) to prove the FPGA works
-    generated_plan = {
-        "plan": [
-            {
-                "hour": 0, 
-                "bus1_kw": 100, "bus2_kw": 0, "bus3_kw": 100, 
-                "total_kw": 200, 
-                "notes": "Standard Charging"
-            },
-            {
-                "hour": 1, 
-                "bus1_kw": 150, "bus2_kw": 100, "bus3_kw": 100, 
-                "total_kw": 350, 
-                "notes": " HALLUCINATION: Aggressive fast charge requested (UNSAFE)"
-            }, 
-            {
-                "hour": 2, 
-                "bus1_kw": 50, "bus2_kw": 50, "bus3_kw": 50, 
-                "total_kw": 150, 
-                "notes": "Ramping down"
-            }
-        ],
-        "summary": "Optimization complete. Note: Hour 1 exceeds grid safety parameters."
-    }
-    
-    # Save to JSON for the FPGA Bridge
-    with open(OUTPUT_FILE, "w") as f:
-        json.dump(generated_plan, f, indent=4)
+    try:
+        with open('plan.json', 'r') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print("❌ Error: plan.json not found. Run planner.py first.")
+        return
+
+    print(f" Received AI Plan: {data['summary']}\n")
+
+    for step in data['plan']:
+        hour = step['hour']
+        ai_req = step['total_kw']
         
-    print(f" Plan generated and saved to {OUTPUT_FILE}")
-    print(" HANDING OFF TO HARDWARE SAFETY BRIDGE...")
+        # 1. SEND TO HARDWARE (Simulation)
+        hw_enforced, status_code = mock_fpga_hardware_gate(ai_req)
+        
+        # 2. DECODE HARDWARE STATUS
+        if status_code == STATUS_VETO:
+            print(f" Hour {hour}: [REQ: {ai_req}kW] ->  [FPGA STATUS: 0x1 VETO] -> CLAMPED to {hw_enforced}kW")
+        elif status_code == STATUS_OK:
+            print(f" Hour {hour}: [REQ: {ai_req}kW] ->  [FPGA STATUS: 0x0 PASS] -> Approved")
+        
+    print("\n FINAL FPGA COMMANDS LATCHED.")
 
 if _name_ == "_main_":
-    generate_optimization_plan()
+    run_safety_bridge()
