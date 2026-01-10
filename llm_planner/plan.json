@@ -1,20 +1,29 @@
 {
-  "plan": [
-    {
-      "hour": 0,
-      "total_kw": 150,
-      "notes": "Safe Operation"
-    },
-    {
-      "hour": 1,
-      "total_kw": 350, 
-      "notes": " HALLUCINATION: Dangerous Overload (FPGA Must Veto)"
-    },
-    {
-      "hour": 2,
-      "total_kw": 150,
-      "notes": "Safe Operation"
-    }
-  ],
-  "summary": "Optimization complete. Warning: Hour 1 exceeds physical safety limits."
+    "plan": [
+        {
+            "hour": 0,
+            "bus1_kw": 100,
+            "bus2_kw": 0,
+            "bus3_kw": 100,
+            "total_kw": 200,
+            "notes": "Standard Charging"
+        },
+        {
+            "hour": 1,
+            "bus1_kw": 150,
+            "bus2_kw": 100,
+            "bus3_kw": 100,
+            "total_kw": 350,
+            "notes": " HALLUCINATION: Aggressive fast charge requested (UNSAFE)"
+        },
+        {
+            "hour": 2,
+            "bus1_kw": 50,
+            "bus2_kw": 50,
+            "bus3_kw": 50,
+            "total_kw": 150,
+            "notes": "Ramping down"
+        }
+    ],
+    "summary": "Optimization complete. Note: Hour 1 exceeds grid safety parameters."
 }
