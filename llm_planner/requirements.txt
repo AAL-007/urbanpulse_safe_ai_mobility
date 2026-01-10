@@ -18,4 +18,3 @@ EV-Planner/
 
 #Command setup
 pip install -r requirements.txt && python planner.py && run.bat
-

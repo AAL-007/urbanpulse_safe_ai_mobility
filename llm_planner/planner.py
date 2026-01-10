@@ -45,5 +45,5 @@ def generate_optimization_plan():
     print(f" Plan generated and saved to {OUTPUT_FILE}")
     print(" HANDING OFF TO HARDWARE SAFETY BRIDGE...")
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     generate_optimization_plan()

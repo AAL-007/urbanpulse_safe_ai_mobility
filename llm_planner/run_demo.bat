@@ -16,4 +16,4 @@ python fpga_safety.py
 echo.
 echo ✅ Cycle Complete. System Sleeping...
 timeout /t 300
-goto loop
+goto 

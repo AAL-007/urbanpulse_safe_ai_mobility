@@ -59,5 +59,5 @@ def run_safety_bridge():
     print("-" * 60)
     print(" FINAL FPGA COMMANDS LATCHED FOR INVERTER.")
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     run_safety_bridge()
