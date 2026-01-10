@@ -48,8 +48,8 @@ def run_bridge():
     os.system("cls" if os.name == "nt" else "clear")
 
     print(f"{CYAN}==================================================")
-    print(f"🌉 URBANPULSE INTEGRATION BRIDGE  |  v{VERSION}")
-    print(f"🔗 MODE: {'SIMULATED FPGA' if DEMO_MODE else 'PHYSICAL UART'}")
+    print(f" URBANPULSE INTEGRATION BRIDGE  |  v{VERSION}")
+    print(f" MODE: {'SIMULATED FPGA' if DEMO_MODE else 'PHYSICAL UART'}")
     print(f"=================================================={RESET}\n")
 
     # -------- READ AI PLAN --------
@@ -101,13 +101,13 @@ def run_bridge():
 
         # ---- STATUS DECODE ----
         if status == STATUS_VETO:
-            log("SENTINEL", "⚠️ HARDWARE VETO ASSERTED", RED)
+            log("SENTINEL", " HARDWARE VETO ASSERTED", RED)
             log("ACTION", f"CLAMPED {requested_kw} kW → {safe_kw} kW", YELLOW)
         elif status == STATUS_THERM:
-            log("SENTINEL", "🔥 THERMAL LOCKOUT", RED)
+            log("SENTINEL", " THERMAL LOCKOUT", RED)
             log("ACTION", "POWER CUT TO 0 kW", RED)
         else:
-            log("SENTINEL", "✅ STATUS NOMINAL", GREEN)
+            log("SENTINEL", " STATUS NOMINAL", GREEN)
             log("ACTION", f"APPROVED {safe_kw} kW", GREEN)
 
         print("-" * 56)
@@ -117,7 +117,7 @@ def run_bridge():
     if ser is not None:
         ser.close()
 
-    print(f"\n{GREEN}✅ BRIDGE EXECUTION COMPLETE — SYSTEM STABLE.{RESET}")
+    print(f"\n{GREEN} BRIDGE EXECUTION COMPLETE — SYSTEM STABLE.{RESET}")
 
 if __name__ == "__main__":
     run_bridge()
