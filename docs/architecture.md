@@ -21,6 +21,16 @@ UrbanPulse is composed of three clearly separated layers:
 2. *FPGA Safety Controller (Authority Layer)*
 3. *Sentinel Monitor (Oversight & Audit Layer)*
 
+# System Architecture
+
+UrbanPulse uses a layered, cyber-physical architecture that deliberately separates decision-making from enforcement.
+
+![Architecture Flow][def]
+
+---
+
+## Architecture Layers
+
 Each layer has a single responsibility and no hidden authority.
 
 ---
@@ -101,3 +111,5 @@ Instead, it implements:
 > Human-in-the-loop approval.**
 
 This makes the system suitable for safety-critical, real-world deployment.
+
+[def]: assets/architecture_flow.jpeg

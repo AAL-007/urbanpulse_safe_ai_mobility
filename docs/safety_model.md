@@ -1,78 +1,67 @@
-# LLM Planner Overview
+# Safety Model & Enforcement Logic
 
-## Purpose of the AI Planner
-
-The AI planner in UrbanPulse is responsible for *optimization*, not safety.
-
-Its role is to:
-- Analyze fleet requirements
-- Optimize charging schedules
-- Maximize throughput and efficiency
-- Suggest power requests
-
-It is intentionally treated as an *untrusted component*.
+UrbanPulse enforces safety using *deterministic hardware*, not software heuristics.
 
 ---
 
-## Why Use an LLM?
+## Safety Logic Overview
 
-Large language models are powerful at:
-- Pattern recognition
-- Multi-objective optimization
-- Scenario reasoning
+![Hardware Control Flow][def2]
 
-However, they are also:
-- Probabilistic
-- Non-deterministic
-- Capable of hallucination
+All AI requests pass through the FPGA safety gate.
 
-UrbanPulse embraces this reality instead of hiding it.
+### Safety Checks (Hardware-Enforced)
 
----
-
-## Hallucination Is a Feature Here
-
-In this project:
-- The AI planner is allowed to over-request power
-- Unsafe outputs are intentionally demonstrated
-- Example: requesting 350 kW when only 200 kW is safe
-
-This proves a key point:
-
-> *System safety does not depend on AI correctness.*
+1. Grid power limit
+2. Thermal threshold
+3. Fail-safe conditions
+4. AI heartbeat validity
 
 ---
 
-## Planner Output Format
+## Status Codes
 
-The planner outputs a structured plan (JSON) containing:
-- Requested power per time slot
-- Scheduling decisions
-- Metadata for evaluation
-
-This output is passed verbatim to the FPGA layer.
-
-No filtering is applied in software.
+| Code | Meaning        |
+|----|---------------|
+| 00 | OK (Approved) |
+| 01 | Grid Veto     |
+| 10 | Thermal Trip  |
+| 11 | AI Fault     |
 
 ---
 
-## What the Planner Cannot Do
+## Deterministic Enforcement
 
-The AI planner:
-- Cannot bypass hardware rules
-- Cannot disable safety checks
-- Cannot override FPGA logic
-- Cannot affect final power delivery directly
+- Logic executes on clock edges
+- No floating states
+- No probabilistic behavior
+- No software override
+
+This ensures *bounded physical behavior*.
 
 ---
 
-## Design Philosophy
+## Power & Efficiency Evidence
 
-The planner is allowed to be:
-- Creative
-- Aggressive
-- Imperfect
+![Power Summary][def]
 
-Because it is *never trusted with authority*.
+The FPGA safety logic operates at *very low power* while enforcing hard physical limits.
 
-This separation is fundamental to UrbanPulse.
+---
+
+## Hardware Verification
+
+Raw engineering evidence is available in:
+
+docs/hardware_proofs/
+
+This includes:
+- Vivado waveforms
+- Synthesis summaries
+- Power reports
+- AI hallucination inputs
+
+These files are provided for *verification and audit*, not marketing.
+
+[def]: assets/power_summary.jpeg
+[def2]: assets/hardware_control_flow.jpeg
