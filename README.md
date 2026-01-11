@@ -81,9 +81,10 @@ Integration Bridge
 FPGA Safety Gate
    ↓
 Sentinel Monitor
-'''
+```
 
 Each layer has a single, clearly bounded responsibility.
+
 ---
 
 ## 5. Layer-by-Layer Breakdown
